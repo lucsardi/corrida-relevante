@@ -1,5 +1,5 @@
 /* =====================================================================
-   CONFIGURAÇÃO GERAL — SUMMIT HORIZON 2026
+   CONFIGURAÇÃO GERAL — TRILHA RELEVANTE 2026
    Este é o ÚNICO arquivo que você precisa editar para conectar o
    formulário do site a um Google Forms e definir o link do grupo do
    WhatsApp. As instruções de como obter cada valor estão no README.md

@@ -1,8 +1,9 @@
-# Summit Horizon 2026 — Landing Page de Inscrição
+# Trilha Relevante 2026 — Landing Page de Inscrição
 
-Landing page estática (HTML + CSS + Bootstrap 5) para inscrição em evento,
-com modal de inscrição que alimenta um Google Forms e, depois, redireciona
-a pessoa para uma página de obrigado e em seguida para o grupo do WhatsApp.
+Landing page estática (HTML + CSS + Bootstrap 5) para inscrição na Corrida
+Relevante, com modal de inscrição que alimenta um Google Forms e, depois,
+redireciona a pessoa para uma página de obrigado e em seguida para o grupo
+do WhatsApp.
 
 ## Estrutura de pastas
 
@@ -21,12 +22,15 @@ summit-horizon/
 │   └── script.js              → Lógica de envio do formulário e redirecionamento
 │
 └── assets/
+    ├── icons/
+    │   └── favicon32.png    → ícone da aba do navegador
     └── images/
-        ├── bg_header.png   → imagem de fundo do header/hero (telas grandes, >=992px)
-        ├── bg_mobile.gif   → imagem de fundo do header/hero (telas pequenas, <992px)
-        ├── logo_r.png      → logo exibida na navbar e na página de obrigado
+        ├── bg_header2.gif  → imagem de fundo do header/hero (telas grandes, >=992px)
+        ├── bg_mobile2.gif  → imagem de fundo do header/hero (telas pequenas, <992px)
+        ├── logo_r2_white.png → logo (branca) exibida na navbar e na página de obrigado
         ├── title_bg.png    → título estilizado do evento (visível só em telas grandes)
         ├── subtitle_bg.png → subtítulo estilizado do evento (visível só em telas grandes)
+        ├── img_1.png, img_2.jpg, img_3.jpg → fotos dos depoimentos
         └── README.txt      → nota lembrete sobre os arquivos acima
 ```
 
@@ -186,8 +190,8 @@ Em poucos segundos o site estará no ar em uma URL tipo
 sentido:
 
 1. No painel do site, vá em **Site configuration → Change site name**
-2. Escolha algo como `summit-horizon-2026`
-3. Sua URL final vira: **`https://summit-horizon-2026.netlify.app`**
+2. Escolha algo como `trilha-relevante-2026`
+3. Sua URL final vira: **`https://trilha-relevante-2026.netlify.app`**
 
 Pronto — a partir de agora, toda vez que você der `git push`, o Netlify
 detecta a mudança e republica o site automaticamente, com a mesma URL.
