@@ -1,203 +1,235 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" href="assets/icons/favicon32.png" type="image/x-icon">
-<title>Inscrição confirmada — Trilha Relevante 2026</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="assets/icons/favicon32.png" type="image/x-icon">
+  <title>Inscrição confirmada — Trilha Relevante 2026</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,500&family=Caveat:wght@600&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,500&family=Caveat:wght@600&display=swap"
+    rel="stylesheet">
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-<link rel="stylesheet" href="css/style.css">
-<style>
-  .thanks-page{
-    min-height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:40px 16px;
-    background:
-      linear-gradient(100deg, rgba(10,20,15,.92) 0%, rgba(10,20,15,.75) 50%, rgba(10,20,15,.55) 100%),
-      url('assets/images/bg_header2.gif') center/cover no-repeat;
-  }
-  @media (max-width:991px){
-    .thanks-page{
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .thanks-page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 16px;
       background:
-        linear-gradient(100deg, rgba(10,20,15,.92) 0%, rgba(10,20,15,.75) 50%, rgba(10,20,15,.55) 100%),
-        url('assets/images/bg_mobile2.gif') center/cover no-repeat;
+        linear-gradient(100deg, rgba(10, 20, 15, .92) 0%, rgba(10, 20, 15, .75) 50%, rgba(10, 20, 15, .55) 100%),
+        url('assets/images/bg_header2.gif') center/cover no-repeat;
     }
-  }
 
-  .thanks-card{
-    background:var(--cream);
-    border-radius:16px;
-    max-width:560px;
-    width:100%;
-    overflow:hidden;
-    box-shadow:0 30px 70px rgba(0,0,0,.4);
-    text-align:center;
-  }
-  .thanks-card .thanks-header{
-    background:var(--forest);
-    padding:44px 30px 34px;
-    color:#fff;
-  }
-  .thanks-check{
-    width:76px; height:76px;
-    border-radius:50%;
-    background:var(--orange);
-    display:flex; align-items:center; justify-content:center;
-    margin:0 auto 18px;
-    font-size:38px;
-    color:#fff;
-    box-shadow:0 10px 25px rgba(242,98,26,.4);
-  }
-  .thanks-card .thanks-header h1{
-    font-size:44px;
-    margin-bottom:6px;
-    color:#fff;
-  }
-  .thanks-card .thanks-header p{
-    font-size:14.5px;
-    opacity:.85;
-    margin:0;
-    font-weight:300;
-  }
-  .thanks-body{
-    padding:34px 30px 38px;
-  }
-  .thanks-body .lead-msg{
-    font-size:16px;
-    color:var(--charcoal);
-    margin-bottom:26px;
-    font-weight:400;
-  }
-  .thanks-body .lead-msg strong{ color:var(--forest); }
+    @media (max-width:991px) {
+      .thanks-page {
+        background:
+          linear-gradient(100deg, rgba(10, 20, 15, .92) 0%, rgba(10, 20, 15, .75) 50%, rgba(10, 20, 15, .55) 100%),
+          url('assets/images/bg_mobile2.gif') center/cover no-repeat;
+      }
+    }
 
-  .whatsapp-box{
-    background:#fff;
-    border:1px solid #e2ddd0;
-    border-radius:12px;
-    padding:22px;
-    margin-bottom:24px;
-  }
-  .whatsapp-box .wa-icon{
-    width:46px; height:46px;
-    border-radius:50%;
-    background:#25D366;
-    color:#fff;
-    display:flex; align-items:center; justify-content:center;
-    font-size:22px;
-    margin:0 auto 12px;
-  }
-  .whatsapp-box .wa-title{
-    font-weight:600;
-    color:var(--forest);
-    margin-bottom:4px;
-    font-size:15px;
-  }
-  .whatsapp-box .wa-sub{
-    font-size:13px;
-    color:#7a7568;
-    margin-bottom:16px;
-  }
-  .countdown-number{
-    font-family:'Bebas Neue', sans-serif;
-    font-size:22px;
-    color:var(--orange);
-  }
+    .thanks-card {
+      background: var(--cream);
+      border-radius: 16px;
+      max-width: 560px;
+      width: 100%;
+      overflow: hidden;
+      box-shadow: 0 30px 70px rgba(0, 0, 0, .4);
+      text-align: center;
+    }
 
-  .btn-whatsapp{
-    background:#25D366;
-    border:none;
-    color:#fff;
-    font-weight:600;
-    padding:13px 26px;
-    border-radius:8px;
-    display:inline-flex;
-    align-items:center;
-    gap:10px;
-    transition:.2s;
-    width:100%;
-    justify-content:center;
-  }
-  .btn-whatsapp:hover{ background:#1fb959; color:#fff; }
+    .thanks-card .thanks-header {
+      background: var(--forest);
+      padding: 44px 30px 34px;
+      color: #fff;
+    }
 
-  .back-home-link{
-    display:inline-block;
-    margin-top:20px;
-    font-size:13px;
-    color:#8a8470;
-  }
-  .back-home-link:hover{ color:var(--orange); }
+    .thanks-check {
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      background: var(--orange);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 18px;
+      font-size: 38px;
+      color: #fff;
+      box-shadow: 0 10px 25px rgba(242, 98, 26, .4);
+    }
 
-  .thanks-logo{
-    height:34px;
-    margin-bottom:22px;
-  }
-</style>
+    .thanks-card .thanks-header h1 {
+      font-size: 44px;
+      margin-bottom: 6px;
+      color: #fff;
+    }
+
+    .thanks-card .thanks-header p {
+      font-size: 14.5px;
+      opacity: .85;
+      margin: 0;
+      font-weight: 300;
+    }
+
+    .thanks-body {
+      padding: 34px 30px 38px;
+    }
+
+    .thanks-body .lead-msg {
+      font-size: 16px;
+      color: var(--charcoal);
+      margin-bottom: 26px;
+      font-weight: 400;
+    }
+
+    .thanks-body .lead-msg strong {
+      color: var(--forest);
+    }
+
+    .whatsapp-box {
+      background: #fff;
+      border: 1px solid #e2ddd0;
+      border-radius: 12px;
+      padding: 22px;
+      margin-bottom: 24px;
+    }
+
+    .whatsapp-box .wa-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: #25D366;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      margin: 0 auto 12px;
+    }
+
+    .whatsapp-box .wa-title {
+      font-weight: 600;
+      color: var(--forest);
+      margin-bottom: 4px;
+      font-size: 15px;
+    }
+
+    .whatsapp-box .wa-sub {
+      font-size: 13px;
+      color: #7a7568;
+      margin-bottom: 16px;
+    }
+
+    .countdown-number {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      color: var(--orange);
+    }
+
+    .btn-whatsapp {
+      background: #25D366;
+      border: none;
+      color: #fff;
+      font-weight: 600;
+      padding: 13px 26px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: .2s;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .btn-whatsapp:hover {
+      background: #1fb959;
+      color: #fff;
+    }
+
+    .back-home-link {
+      display: inline-block;
+      margin-top: 20px;
+      font-size: 13px;
+      color: #8a8470;
+    }
+
+    .back-home-link:hover {
+      color: var(--orange);
+    }
+
+    .thanks-logo {
+      height: 34px;
+      margin-bottom: 22px;
+    }
+  </style>
 </head>
+
 <body>
 
-<div class="thanks-page">
-  <div class="thanks-card">
-    <div class="thanks-header">
-      <img src="assets/images/logo_r2_white.png" alt="Trilha Relevante" class="thanks-logo">
-      <div class="thanks-check">✓</div>
-      <h1>INSCRIÇÃO<br>CONFIRMADA!</h1>
-      <p>Você garantiu sua vaga na Corrida Relevante 2026.</p>
-    </div>
-
-    <div class="thanks-body">
-      <p class="lead-msg">
-        Obrigado por se inscrever! Enviamos os detalhes para o seu e-mail.
-        Agora, entre no <strong>grupo oficial do WhatsApp</strong> para receber
-        novidades, lembretes e conteúdos exclusivos antes do evento.
-      </p>
-
-      <div class="whatsapp-box">
-        <div class="wa-icon">💬</div>
-        <div class="wa-title">Grupo oficial no WhatsApp</div>
-        <div class="wa-sub">
-          Você será redirecionado automaticamente em
-          <span class="countdown-number" id="countdown">5</span> segundos...
-        </div>
-        <a href="#" id="whatsappBtn" class="btn-whatsapp" target="_blank" rel="noopener">
-          ENTRAR NO GRUPO AGORA →
-        </a>
+  <div class="thanks-page">
+    <div class="thanks-card">
+      <div class="thanks-header">
+        <img src="assets/images/logo_r2_white.png" alt="Trilha Relevante" class="thanks-logo">
+        <div class="thanks-check">✓</div>
+        <h1>INSCRIÇÃO<br>CONFIRMADA!</h1>
+        <p>Você garantiu sua vaga na Corrida Relevante 2026.</p>
       </div>
 
-      <a href="index.html" class="back-home-link">← Voltar para o site</a>
+      <div class="thanks-body">
+        <p class="lead-msg">
+          Obrigado por se inscrever! Enviamos os detalhes para o seu e-mail.
+          Agora, entre no <strong>grupo oficial do WhatsApp</strong> para receber
+          novidades, lembretes e conteúdos exclusivos antes do evento.
+        </p>
+
+        <div class="whatsapp-box">
+          <div class="wa-icon">💬</div>
+          <div class="wa-title">Grupo oficial no WhatsApp</div>
+          <div class="wa-sub">
+            Você será redirecionado automaticamente em
+            <span class="countdown-number" id="countdown">5</span> segundos...
+          </div>
+          <a href="#" id="whatsappBtn" class="btn-whatsapp" target="_blank" rel="noopener">
+            ENTRAR NO GRUPO AGORA →
+          </a>
+        </div>
+
+        <a href="index.html" class="back-home-link">← Voltar para o site</a>
+      </div>
     </div>
   </div>
-</div>
 
-<script src="js/config.js"></script>
-<script>
-  // Preenche o link do WhatsApp a partir do config.js
-  const whatsappBtn = document.getElementById('whatsappBtn');
-  const countdownEl = document.getElementById('countdown');
-  const whatsappLink = EVENT_CONFIG.whatsappGroupLink;
-  let secondsLeft = EVENT_CONFIG.redirectDelaySeconds || 5;
+  <script src="js/config.js"></script>
+  <script>
+    // Preenche o link do WhatsApp a partir do config.js
+    const whatsappBtn = document.getElementById('whatsappBtn');
+    const countdownEl = document.getElementById('countdown');
+    const whatsappLink = EVENT_CONFIG.whatsappGroupLink;
+    let secondsLeft = EVENT_CONFIG.redirectDelaySeconds || 5;
 
-  whatsappBtn.href = whatsappLink;
-  countdownEl.textContent = secondsLeft;
+    whatsappBtn.href = whatsappLink;
+    countdownEl.textContent = secondsLeft;
 
-  const timer = setInterval(function () {
-    secondsLeft -= 1;
+    const timer = setInterval(function () {
+      secondsLeft -= 1;
 
-    if (secondsLeft <= 0) {
-      clearInterval(timer);
-      countdownEl.textContent = '0';
-      window.location.href = whatsappLink;
-    } else {
-      countdownEl.textContent = secondsLeft;
-    }
-  }, 1000);
-</script>
+      if (secondsLeft <= 0) {
+        clearInterval(timer);
+        countdownEl.textContent = '0';
+        window.location.href = whatsappLink;
+      } else {
+        countdownEl.textContent = secondsLeft;
+      }
+    }, 1000);
+  </script>
 
 </body>
+
 </html>

@@ -8,9 +8,47 @@ const form = document.getElementById('formInscricao');
 const successAlert = document.getElementById('successAlert');
 const submitBtn = form.querySelector('button[type="submit"]');
 
+// ============================================================
+// Campo "Participa de uma conexão?" — o dropdown "Qual?" fica sempre
+// visível, mas só é habilitado quando a pessoa marca "Sim". O valor
+// final é sincronizado com o campo oculto "empresa" (que é o que vai
+// pra planilha).
+// ============================================================
+const conexaoRadios = document.querySelectorAll('input[name="participaConexao"]');
+const conexaoQualSelect = document.getElementById('conexaoQualSelect');
+const empresaHidden = document.getElementById('empresaHidden');
+
+conexaoRadios.forEach(function (radio) {
+  radio.addEventListener('change', function () {
+    if (this.value === 'sim') {
+      conexaoQualSelect.disabled = false;
+      conexaoQualSelect.setAttribute('required', 'required');
+      empresaHidden.value = conexaoQualSelect.value || '';
+    } else {
+      conexaoQualSelect.disabled = true;
+      conexaoQualSelect.removeAttribute('required');
+      conexaoQualSelect.value = '';
+      conexaoQualSelect.classList.remove('is-invalid');
+      empresaHidden.value = 'Não participa de uma conexão';
+    }
+  });
+});
+
+conexaoQualSelect.addEventListener('change', function () {
+  empresaHidden.value = this.value;
+});
+
 form.addEventListener('submit', function (e) {
   e.preventDefault();
   e.stopPropagation();
+
+  // Validação extra: se marcou "Sim" mas não escolheu a conexão no dropdown
+  if (conexaoQualSelect.hasAttribute('required') && !conexaoQualSelect.value) {
+    conexaoQualSelect.classList.add('is-invalid');
+    form.classList.add('was-validated');
+    successAlert.style.display = 'none';
+    return;
+  }
 
   if (!form.checkValidity()) {
     form.classList.add('was-validated');
@@ -73,6 +111,14 @@ document.getElementById('inscricaoModal').addEventListener('hidden.bs.modal', fu
   form.classList.remove('was-validated');
   submitBtn.disabled = false;
   submitBtn.textContent = 'CONFIRMAR INSCRIÇÃO →';
+
+  // Reseta o campo "Participa de uma conexão?" pro estado inicial
+  conexaoRadios.forEach(function (radio) { radio.checked = false; });
+  conexaoQualSelect.disabled = true;
+  conexaoQualSelect.removeAttribute('required');
+  conexaoQualSelect.value = '';
+  conexaoQualSelect.classList.remove('is-invalid');
+  empresaHidden.value = '';
 });
 
 // ============================================================
@@ -93,4 +139,3 @@ if (teaserModalEl && teaserVideo) {
     teaserVideo.currentTime = 0;
   });
 }
-

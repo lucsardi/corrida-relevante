@@ -1,4 +1,4 @@
-# Trilha Relevante 2026 — Landing Page de Inscrição
+# Corrida Relevante 2026 — Landing Page de Inscrição
 
 Landing page estática (HTML + CSS + Bootstrap 5) para inscrição na Corrida
 Relevante, com modal de inscrição que alimenta uma planilha do Google Sheets
@@ -8,7 +8,7 @@ para o grupo do WhatsApp.
 ## Estrutura de pastas
 
 ```
-summit-horizon/
+corrida_relevante/
 │
 ├── index.html            → Página principal (landing page)
 ├── obrigado.html          → Página de obrigado (pós-inscrição → WhatsApp)

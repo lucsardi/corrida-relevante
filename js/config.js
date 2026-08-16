@@ -15,7 +15,7 @@ const EVENT_CONFIG = {
     // URL do seu Web App do Apps Script (termina em "/exec").
     // Veja no README como criar e publicar esse Web App.
     // Exemplo: https://script.google.com/macros/s/AKfycbxxxxxxxxxxxxxxxxxxxxxxxxx/exec
-    webAppUrl: "https://script.google.com/macros/s/COLOQUE_O_ID_DO_SEU_WEB_APP_AQUI/exec"
+    webAppUrl: "https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycbwFRMHJTgxamHhHFKWeZeGFnzAdPDSPm-Weo3ujduPh8fMCdMzntdhh0cvGmNWpHM-s/exec"
   },
 
   // ---------------------------------------------------------------
@@ -23,7 +23,7 @@ const EVENT_CONFIG = {
   // ---------------------------------------------------------------
   // Link de convite do grupo do WhatsApp para onde a pessoa será
   // redirecionada depois da página de obrigado.
-  whatsappGroupLink: "https://chat.whatsapp.com/COLOQUE_O_LINK_DO_SEU_GRUPO_AQUI",
+  whatsappGroupLink: "https://chat.whatsapp.com/JQEbpGsm00XGzzH02ZUx0q",
 
   // Quantos segundos a página de obrigado espera antes de redirecionar
   // automaticamente para o WhatsApp.
