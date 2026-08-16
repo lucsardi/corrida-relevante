@@ -1,7 +1,7 @@
 // ============================================================
-// Envia o formulário de inscrição para o Google Forms e depois
-// redireciona a pessoa para a página de obrigado.
-// Configurações (URL do form, IDs dos campos) ficam em js/config.js
+// Envia o formulário de inscrição para uma planilha do Google Sheets
+// (via Google Apps Script Web App) e depois redireciona a pessoa para
+// a página de obrigado. Configurações ficam em js/config.js
 // ============================================================
 
 const form = document.getElementById('formInscricao');
@@ -22,8 +22,6 @@ form.addEventListener('submit', function (e) {
   submitBtn.disabled = true;
   submitBtn.textContent = 'ENVIANDO...';
 
-  // Monta o corpo da requisição usando os entry.IDs configurados em config.js
-  const payload = new FormData();
   const values = {
     nome: form.nome.value,
     email: form.email.value,
@@ -34,13 +32,6 @@ form.addEventListener('submit', function (e) {
     mensagem: form.mensagem.value
   };
 
-  Object.keys(values).forEach((key) => {
-    const entryId = EVENT_CONFIG.googleForm.fields[key];
-    if (entryId) {
-      payload.append(entryId, values[key] || '');
-    }
-  });
-
   // Guarda os dados localmente também, como backup (aparece no console
   // e pode ser consultado em sessionStorage se precisar depurar).
   try {
@@ -49,16 +40,27 @@ form.addEventListener('submit', function (e) {
     // sessionStorage pode falhar em alguns navegadores/modos privados — sem problema, segue o fluxo.
   }
 
-  // Google Forms não responde com cabeçalhos CORS, então usamos "no-cors":
-  // a requisição é enviada normalmente, mas não conseguimos ler a resposta.
-  // Por isso redirecionamos sempre no ".finally", sem depender do retorno.
-  fetch(EVENT_CONFIG.googleForm.actionUrl, {
+  // Content-Type "text/plain" evita que o navegador dispare uma requisição
+  // de preflight (OPTIONS) antes do POST — o Apps Script não responde bem
+  // a preflight, então essa é a forma padrão de contornar isso. O Apps
+  // Script lê o corpo normalmente como JSON, independente do Content-Type.
+  fetch(EVENT_CONFIG.googleSheet.webAppUrl, {
     method: 'POST',
-    mode: 'no-cors',
-    body: payload
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(values)
   })
-    .catch(function () {
-      // Erro de rede não deve travar o usuário na tela — seguimos para o redirecionamento.
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (result) {
+      if (result && result.status !== 'success') {
+        console.warn('A planilha retornou um erro ao salvar a inscrição:', result.message);
+      }
+    })
+    .catch(function (err) {
+      // Se der erro de rede/CORS, não temos confirmação — mas não travamos
+      // a pessoa na tela por isso. Fica registrado no console pra depuração.
+      console.warn('Não foi possível confirmar o envio para a planilha:', err);
     })
     .finally(function () {
       window.location.href = 'obrigado.html';

@@ -1,9 +1,9 @@
 # Trilha Relevante 2026 — Landing Page de Inscrição
 
 Landing page estática (HTML + CSS + Bootstrap 5) para inscrição na Corrida
-Relevante, com modal de inscrição que alimenta um Google Forms e, depois,
-redireciona a pessoa para uma página de obrigado e em seguida para o grupo
-do WhatsApp.
+Relevante, com modal de inscrição que alimenta uma planilha do Google Sheets
+e, depois, redireciona a pessoa para uma página de obrigado e em seguida
+para o grupo do WhatsApp.
 
 ## Estrutura de pastas
 
@@ -18,21 +18,24 @@ summit-horizon/
 │   └── style.css            → Todo o CSS customizado (cores, tipografia, seções, modal, obrigado)
 │
 ├── js/
-│   ├── config.js             → ⚙️ ÚNICO arquivo que você precisa editar (Google Form + WhatsApp)
+│   ├── config.js             → ⚙️ ÚNICO arquivo que você precisa editar (Google Sheets + WhatsApp)
 │   └── script.js              → Lógica de envio do formulário e redirecionamento
+│
+├── google-apps-script/
+│   └── Code.gs                → Código para colar no Apps Script (recebe e salva as inscrições)
 │
 └── assets/
     ├── icons/
     │   └── favicon32.png    → ícone da aba do navegador
-    └── images/
-        ├── bg_header2.gif  → imagem de fundo do header/hero (telas grandes, >=992px)
-        ├── bg_mobile2.gif  → imagem de fundo do header/hero (telas pequenas, <992px)
-        ├── logo_r2_white.png → logo (branca) exibida na navbar e na página de obrigado
-        ├── title_bg.png    → título estilizado do evento (visível só em telas grandes)
-        ├── subtitle_bg.png → subtítulo estilizado do evento (visível só em telas grandes)
-        ├── img_1.png, img_2.jpg, img_3.jpg → fotos dos depoimentos
-        ├── teaser_thumb.jpg (opcional) → miniatura do vídeo teaser
-        └── README.txt      → nota lembrete sobre os arquivos acima
+    ├── images/
+    │   ├── bg_header2.gif  → imagem de fundo do header/hero (telas grandes, >=992px)
+    │   ├── bg_mobile2.gif  → imagem de fundo do header/hero (telas pequenas, <992px)
+    │   ├── logo_r2_white.png → logo (branca) exibida na navbar e na página de obrigado
+    │   ├── title_bg.png    → título estilizado do evento (visível só em telas grandes)
+    │   ├── subtitle_bg.png → subtítulo estilizado do evento (visível só em telas grandes)
+    │   ├── img_1.png, img_2.jpg, img_3.jpg → fotos dos depoimentos
+    │   ├── teaser_thumb.jpg (opcional) → miniatura do vídeo teaser
+    │   └── README.txt      → nota lembrete sobre os arquivos acima
     └── videos/
         ├── teaser.mp4      → vídeo exibido no modal "Assistir Teaser"
         └── README.txt      → nota lembrete sobre o vídeo
@@ -47,73 +50,75 @@ summit-horizon/
 
 ---
 
-## 1. Conectar o formulário ao Google Forms
+## 1. Conectar o formulário ao Google Sheets
 
 O modal de inscrição (`#inscricaoModal` no `index.html`) envia os dados
-diretamente para um Google Forms, sem precisar de backend. Você só precisa
-editar o arquivo **`js/config.js`**.
+diretamente para uma planilha do Google Sheets, sem precisar de backend —
+usando um **Google Apps Script Web App** como ponte. Você só precisa criar
+a planilha, publicar o script (código já pronto em
+`google-apps-script/Code.gs`) e colar a URL gerada em **`js/config.js`**.
+
+### Por que assim, em vez de um Google Forms?
+
+O Google Forms funcionaria, mas ele geraria um formulário público que
+ninguém nunca vê (o site usa o modal próprio), e o envio é "às cegas" — sem
+confirmação de que deu certo. Indo direto para a planilha via Apps Script,
+você tem controle total do formato dos dados **e** confirmação real de
+sucesso no envio.
 
 ### Passo a passo
 
-1. **Crie um Google Form** com uma pergunta para cada campo do site, na mesma
-   ordem (não precisa ser idêntico, mas facilita a organização):
-   - Nome completo (resposta curta)
-   - E-mail (resposta curta)
-   - Telefone / WhatsApp (resposta curta)
-   - Empresa / Instituição (resposta curta)
-   - Trilha de interesse (múltipla escolha ou lista suspensa)
-   - Como conheceu o evento? (múltipla escolha ou lista suspensa)
-   - Mensagem (parágrafo)
+1. **Crie uma planilha nova** em [sheets.google.com](https://sheets.google.com)
+   e dê um nome a ela (ex: "Inscrições — Trilha Relevante 2026").
 
-2. **Pegue a URL de envio do formulário:**
-   - Clique nos três pontinhos (⋮) no canto superior direito do formulário
-   - Clique em **"Obter link para pré-preenchimento"**
-   - Preencha qualquer resposta de teste em cada campo e clique em **"Obter link"**
-   - Copie o link gerado — ele será parecido com:
-     ```
-     https://docs.google.com/forms/d/e/1FAIpQLSxxxxxxxxxxxxxxxxxxxxxxx/viewform?usp=pp_url&entry.111111111=Teste&entry.222222222=teste%40email.com...
-     ```
+2. **Abra o editor de scripts:**
+   - Menu **Extensões → Apps Script**
+   - Apague todo o conteúdo padrão (`function myFunction() {...}`)
+   - Abra o arquivo `google-apps-script/Code.gs` (está na pasta do projeto),
+     copie todo o conteúdo e cole no editor
+   - Clique no ícone de disquete (salvar) — pode dar qualquer nome ao projeto
 
-3. **Extraia os dados desse link** e cole em `js/config.js`:
-   - A parte `.../d/e/1FAIpQLSxxxxxxxxxxxxxxxxxxxxxxx/` é o **ID do formulário**.
-     Monte a `actionUrl` assim:
-     ```
-     https://docs.google.com/forms/d/e/1FAIpQLSxxxxxxxxxxxxxxxxxxxxxxx/formResponse
-     ```
-     (repare: troca `viewform` por `formResponse`)
-   - Cada `entry.NNNNNNNNN=valor` no link corresponde a um campo. Identifique
-     qual `entry.` é qual pergunta (pelo valor de teste que você digitou) e
-     preencha em `fields` no `config.js`:
-     ```js
-     fields: {
-       nome:     "entry.111111111",
-       email:    "entry.222222222",
-       telefone: "entry.333333333",
-       empresa:  "entry.444444444",
-       trilha:   "entry.555555555",
-       origem:   "entry.666666666",
-       mensagem: "entry.777777777"
-     }
-     ```
+3. **Publique como Web App:**
+   - Clique em **Implantar → Nova implantação**
+   - No ícone de engrenagem, escolha o tipo **"App da Web"**
+   - **Executar como:** Eu (seu e-mail)
+   - **Quem tem acesso:** Qualquer pessoa
+   - Clique em **Implantar**
+   - O Google vai pedir para autorizar as permissões (é a sua própria
+     planilha, pode aceitar) — clique em **Avançar → Acessar (nome do
+     projeto) (não seguro) → Permitir**
+     *(esse aviso aparece só porque o script ainda não foi verificado pelo
+     Google — é normal para scripts de uso pessoal)*
 
-4. Salve `js/config.js`. Pronto — o formulário do site já vai alimentar seu
-   Google Form automaticamente a cada inscrição.
+4. **Copie a URL gerada**, algo como:
+   ```
+   https://script.google.com/macros/s/AKfycbxxxxxxxxxxxxxxxxxxxxxxxxx/exec
+   ```
+   e cole em `js/config.js`:
+   ```js
+   googleSheet: {
+     webAppUrl: "https://script.google.com/macros/s/AKfycbxxxxxxxxxxxxxxxxxxxxxxxxx/exec"
+   }
+   ```
 
-> **Prefere Microsoft Forms?** O Microsoft Forms não tem um endpoint público
-> de envio direto (como o Google Forms tem), então a forma confiável de
-> integrar é via **Power Automate**: crie um fluxo com gatilho
-> "Quando uma solicitação HTTP for recebida", que insere a resposta no seu
-> Forms/Excel, e troque a `actionUrl` em `config.js` pela URL desse fluxo
-> (ajustando o `script.js` para enviar JSON em vez de `FormData`, se for o caso).
-> Posso te ajudar a montar esse fluxo se preferir esse caminho.
+5. Pronto. A cada inscrição, uma nova linha é criada automaticamente na aba
+   **"Inscrições"** da sua planilha (o script cria a aba e o cabeçalho
+   sozinho, na primeira vez que alguém se inscrever).
 
-### Por que o envio "não confirma" no navegador?
+> **Testando o Web App:** cole a URL do passo 4 direto no navegador. Se
+> aparecer a mensagem *"Web App da Trilha Relevante 2026 está no ar..."*,
+> está tudo certo e publicado.
 
-O Google Forms não libera CORS para sites externos, então o envio é feito em
-modo `no-cors` — o navegador manda os dados, mas não temos como ler a
-resposta de volta. Por isso o site sempre redireciona para a página de
-obrigado após o envio, mesmo sem confirmação visual. **Teste uma inscrição
-de verdade e confira se ela aparece nas respostas do seu Google Form.**
+> **Atualizou o código do script depois?** Toda vez que você editar o
+> `Code.gs` no Apps Script, precisa ir em **Implantar → Gerenciar
+> implantações → ✏️ (editar) → Nova versão → Implantar** para as mudanças
+> valerem — só salvar não é suficiente.
+
+> **Prefere Microsoft (Excel/Forms)?** O caminho equivalente é o **Power
+> Automate**: um fluxo com gatilho "Quando uma solicitação HTTP for
+> recebida", que insere a linha numa planilha do Excel Online, e você troca
+> a `webAppUrl` em `config.js` pela URL desse fluxo. Posso te ajudar a
+> montar isso se preferir esse caminho.
 
 ---
 
@@ -242,7 +247,7 @@ detecta a mudança e republica o site automaticamente, com a mesma URL.
 
 | O que mudar                | Onde                                    |
 |-----------------------------|------------------------------------------|
-| Google Form / WhatsApp        | `js/config.js`                          |
+| Google Sheets / WhatsApp        | `js/config.js`                          |
 | Cores da marca                 | `:root { --forest, --orange, --gold... }` no topo de `css/style.css` |
 | Nome do evento, datas            | `index.html` (hero, navbar, footer)     |
 | Trilhas/cards                     | Seção `<section id="trilhas">` no `index.html` |
