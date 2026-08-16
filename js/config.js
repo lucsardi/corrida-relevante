@@ -15,7 +15,7 @@ const EVENT_CONFIG = {
     // URL do seu Web App do Apps Script (termina em "/exec").
     // Veja no README como criar e publicar esse Web App.
     // Exemplo: https://script.google.com/macros/s/AKfycbxxxxxxxxxxxxxxxxxxxxxxxxx/exec
-    webAppUrl: "https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycbwFRMHJTgxamHhHFKWeZeGFnzAdPDSPm-Weo3ujduPh8fMCdMzntdhh0cvGmNWpHM-s/exec"
+    webAppUrl: "https://script.google.com/macros/s/AKfycbwFRMHJTgxamHhHFKWeZeGFnzAdPDSPm-Weo3ujduPh8fMCdMzntdhh0cvGmNWpHM-s/exec"
   },
 
   // ---------------------------------------------------------------

@@ -65,9 +65,8 @@ form.addEventListener('submit', function (e) {
     email: form.email.value,
     telefone: form.telefone.value,
     empresa: form.empresa.value,
-    trilha: form.trilha.value,
-    origem: form.origem.value,
-    mensagem: form.mensagem.value
+    nivelMapas: form.nivelMapas.value,
+    nivelFisico: form.nivelFisico.value
   };
 
   // Guarda os dados localmente também, como backup (aparece no console
