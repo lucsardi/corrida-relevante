@@ -534,4 +534,7 @@
     
     .hero-feature{ margin:0 auto 14px; }
     .final-cta h2{ font-size:34px; }
+    .footer-explore{
+      width:100%;
+    }
   }
