@@ -72,3 +72,23 @@ document.getElementById('inscricaoModal').addEventListener('hidden.bs.modal', fu
   submitBtn.disabled = false;
   submitBtn.textContent = 'CONFIRMAR INSCRIÇÃO →';
 });
+
+// ============================================================
+// Modal do teaser (vídeo): toca ao abrir, pausa e reinicia ao fechar
+// ============================================================
+const teaserModalEl = document.getElementById('teaserModal');
+const teaserVideo = document.getElementById('teaserVideo');
+
+if (teaserModalEl && teaserVideo) {
+  teaserModalEl.addEventListener('shown.bs.modal', function () {
+    teaserVideo.play().catch(function () {
+      // Alguns navegadores bloqueiam autoplay com som — a pessoa dá play manual pelos controles.
+    });
+  });
+
+  teaserModalEl.addEventListener('hidden.bs.modal', function () {
+    teaserVideo.pause();
+    teaserVideo.currentTime = 0;
+  });
+}
+

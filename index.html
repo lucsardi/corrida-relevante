@@ -67,9 +67,9 @@
             <button class="btn btn-orange px-4 py-3" data-bs-toggle="modal" data-bs-target="#inscricaoModal">
               GARANTIR MINHA VAGA &nbsp;→
             </button>
-            <a href="#" class="btn-outline-cream">
+            <button type="button" class="btn-outline-cream" data-bs-toggle="modal" data-bs-target="#teaserModal">
               <span class="play-circle">▶</span> ASSISTIR TEASER
-            </a>
+            </button>
           </div>
         </div>
       </div>
@@ -445,6 +445,26 @@
               </button>
             </div>
           </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ MODAL: TEASER (VÍDEO) ============ -->
+  <div class="modal fade" id="teaserModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content teaser-modal">
+        <button type="button" class="btn-close teaser-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        <div class="ratio ratio-16x9">
+          <video
+            id="teaserVideo"
+            controls
+            playsinline
+            preload="metadata"
+            poster="assets/images/teaser_thumb.jpg">
+            <source src="assets/videos/teaser.mp4" type="video/mp4">
+            Seu navegador não suporta vídeo em HTML5.
+          </video>
         </div>
       </div>
     </div>

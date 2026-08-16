@@ -31,7 +31,11 @@ summit-horizon/
         ├── title_bg.png    → título estilizado do evento (visível só em telas grandes)
         ├── subtitle_bg.png → subtítulo estilizado do evento (visível só em telas grandes)
         ├── img_1.png, img_2.jpg, img_3.jpg → fotos dos depoimentos
+        ├── teaser_thumb.jpg (opcional) → miniatura do vídeo teaser
         └── README.txt      → nota lembrete sobre os arquivos acima
+    └── videos/
+        ├── teaser.mp4      → vídeo exibido no modal "Assistir Teaser"
+        └── README.txt      → nota lembrete sobre o vídeo
 ```
 
 ## Dependências (via CDN, já referenciadas nos HTMLs)
@@ -139,7 +143,33 @@ se quiser mais ou menos tempo de espera.
 
 ---
 
-## 3. Colocar em um versionador (Git) e publicar com URL própria
+## 3. Vídeo do "Assistir Teaser"
+
+O botão **"Assistir Teaser"** do header abre um modal com um player de
+vídeo. Para funcionar, basta colocar o arquivo do vídeo em:
+
+```
+assets/videos/teaser.mp4
+```
+
+Esse nome (`teaser.mp4`) precisa ser exato — é o caminho já referenciado no
+`index.html`. Recomendações:
+
+- **Formato:** MP4 (H.264 + AAC), que funciona em todos os navegadores.
+- **Peso:** tente manter abaixo de ~20–30MB para carregar rápido. Se o vídeo
+  for maior que isso, o ideal é hospedar no YouTube/Vimeo (sem listar
+  publicamente) e trocar o `<video>` por um `<iframe>` incorporado — nesse
+  caso é só pedir que eu ajusto o código.
+- **Miniatura (opcional):** salve uma imagem estática 16:9 em
+  `assets/images/teaser_thumb.jpg` para aparecer como capa do vídeo antes do
+  play. Sem isso, o player mostra fundo preto até carregar.
+
+O vídeo toca automaticamente ao abrir o modal e pausa/reinicia sozinho ao
+fechar (lógica já pronta em `js/script.js`).
+
+---
+
+## 4. Colocar em um versionador (Git) e publicar com URL própria
 
 Como o site ainda vai sofrer atualizações, o ideal é usar **Git + GitHub**
 para versionar, conectado a um serviço de deploy automático — assim toda vez
