@@ -19,10 +19,26 @@ const EVENT_CONFIG = {
   },
 
   // ---------------------------------------------------------------
+  // PAGAMENTO (PIX)
+  // ---------------------------------------------------------------
+  payment: {
+    // Valor da inscrição, só pra exibir na tela (não faz cobrança automática).
+    amount: "R$ 40,00",
+
+    // Sua chave Pix (CPF, e-mail, telefone ou chave aleatória).
+    pixKey: "15728125000100",
+
+    // Nome do titular da chave Pix, exibido como referência pra quem paga.
+    pixKeyOwnerName: "Igreja Evangelica Comunidade Videira"
+  },
+
+  // ---------------------------------------------------------------
   // WHATSAPP
   // ---------------------------------------------------------------
   // Link de convite do grupo do WhatsApp para onde a pessoa será
-  // redirecionada depois da página de obrigado.
+  // redirecionada depois da página de obrigado. Ative "Aprovação de
+  // administrador" nas configurações do grupo, pra revisar manualmente
+  // quem pagou antes de aceitar a entrada.
   whatsappGroupLink: "https://chat.whatsapp.com/JQEbpGsm00XGzzH02ZUx0q",
 
   // Quantos segundos a página de obrigado espera antes de redirecionar

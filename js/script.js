@@ -100,7 +100,7 @@ form.addEventListener('submit', function (e) {
       console.warn('Não foi possível confirmar o envio para a planilha:', err);
     })
     .finally(function () {
-      window.location.href = 'obrigado.html';
+      window.location.href = 'pagamento.html';
     });
 });
 
