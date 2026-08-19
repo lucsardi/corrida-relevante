@@ -23,7 +23,7 @@ const EVENT_CONFIG = {
   // ---------------------------------------------------------------
   payment: {
     // Valor da inscrição, só pra exibir na tela (não faz cobrança automática).
-    amount: "R$ 40,00",
+    amount: "R$ 40,08",
 
     // Sua chave Pix (CPF, e-mail, telefone ou chave aleatória).
     pixKey: "15728125000100",

@@ -9,6 +9,34 @@ const successAlert = document.getElementById('successAlert');
 const submitBtn = form.querySelector('button[type="submit"]');
 
 // ============================================================
+// Vagas esgotadas: consulta o total de inscritos assim que a página
+// carrega e, se já tiver atingido o limite configurado no Apps Script
+// (var LIMITE_INSCRICOES em Code.gs), impede o modal de inscrição de
+// abrir e mostra o modal "Inscrições encerradas" no lugar.
+// ============================================================
+let vagasEsgotadas = false;
+
+fetch(EVENT_CONFIG.googleSheet.webAppUrl + '?action=contagem')
+  .then(function (response) { return response.json(); })
+  .then(function (result) {
+    vagasEsgotadas = !!(result && result.esgotado);
+  })
+  .catch(function (err) {
+    // Se a checagem falhar (ex: sem internet), deixamos o formulário
+    // aberto normalmente — a planilha ainda bloqueia no envio, como
+    // segunda camada de segurança (ver mais abaixo).
+    console.warn('Não foi possível checar o número de vagas:', err);
+  });
+
+const encerradasModalEl = document.getElementById('encerradasModal');
+document.getElementById('inscricaoModal').addEventListener('show.bs.modal', function (e) {
+  if (vagasEsgotadas) {
+    e.preventDefault();
+    new bootstrap.Modal(encerradasModalEl).show();
+  }
+});
+
+// ============================================================
 // Campo "Participa de uma conexão?" — o dropdown "Qual?" fica sempre
 // visível, mas só é habilitado quando a pessoa marca "Sim". O valor
 // final é sincronizado com o campo oculto "empresa" (que é o que vai
@@ -90,16 +118,30 @@ form.addEventListener('submit', function (e) {
       return response.json();
     })
     .then(function (result) {
+      if (result && result.status === 'encerrado') {
+        // Segunda camada de segurança: mesmo que o modal tenha aberto
+        // (ex: duas pessoas se inscrevendo ao mesmo tempo), a própria
+        // planilha recusa depois que o limite é atingido.
+        vagasEsgotadas = true;
+        bootstrap.Modal.getInstance(document.getElementById('inscricaoModal')).hide();
+        new bootstrap.Modal(encerradasModalEl).show();
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'CONFIRMAR INSCRIÇÃO →';
+        return;
+      }
+
       if (result && result.status !== 'success') {
         console.warn('A planilha retornou um erro ao salvar a inscrição:', result.message);
       }
+
+      window.location.href = 'pagamento.html';
     })
     .catch(function (err) {
       // Se der erro de rede/CORS, não temos confirmação — mas não travamos
-      // a pessoa na tela por isso. Fica registrado no console pra depuração.
+      // a pessoa na tela por isso (a planilha segue como segunda camada
+      // de segurança quando a conexão for reestabelecida). Fica
+      // registrado no console pra depuração.
       console.warn('Não foi possível confirmar o envio para a planilha:', err);
-    })
-    .finally(function () {
       window.location.href = 'pagamento.html';
     });
 });
