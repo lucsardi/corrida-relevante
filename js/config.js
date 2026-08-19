@@ -43,6 +43,6 @@ const EVENT_CONFIG = {
 
   // Quantos segundos a página de obrigado espera antes de redirecionar
   // automaticamente para o WhatsApp.
-  redirectDelaySeconds: 5
+  redirectDelaySeconds: 20
 
 };
