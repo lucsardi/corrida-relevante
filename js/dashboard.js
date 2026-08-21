@@ -133,8 +133,8 @@ function renderizarDashboard(dados) {
 
   document.getElementById('kpiTotal').textContent = dados.total;
   document.getElementById('kpiRestantes').textContent = dados.vagasRestantes;
-  document.getElementById('kpiComprovante').textContent = dados.porStatusPagamento['Comprovante enviado'] || 0;
-  document.getElementById('kpiAguardando').textContent = dados.porStatusPagamento['Aguardando pagamento'] || 0;
+  document.getElementById('kpiComprovante').textContent = dados.totalComprovanteEnviado || 0;
+  document.getElementById('kpiAguardando').textContent = dados.totalAguardandoPagamento || 0;
 
   const pct = dados.limite > 0 ? Math.min(Math.round((dados.total / dados.limite) * 100), 100) : 0;
   document.getElementById('progressBar').style.width = pct + '%';
@@ -186,8 +186,9 @@ function renderizarTabelaUltimas(ultimas) {
 
   ultimas.forEach(function (item) {
     const dataFormatada = item.data ? new Date(item.data).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : '—';
-    const badgeClasse = item.pagamento === 'Comprovante enviado' ? 'badge-enviado'
-      : item.pagamento === 'Aguardando pagamento' ? 'badge-aguardando'
+    const pagamento = item.pagamento || '';
+    const badgeClasse = pagamento.indexOf('Comprovante enviado') === 0 ? 'badge-enviado'
+      : pagamento.indexOf('Aguardando pagamento') === 0 ? 'badge-aguardando'
       : 'badge-outro';
 
     const tr = document.createElement('tr');
