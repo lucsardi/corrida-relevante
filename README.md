@@ -1,9 +1,10 @@
 # Trilha Relevante 2026 — Landing Page de Inscrição
 
-Landing page estática (HTML + CSS + Bootstrap 5) para inscrição na Corrida
+Landing page estática feita em (HTML + CSS + Bootstrap 5 + Javascript) para inscrição na Corrida
 Relevante. O fluxo completo: modal de inscrição → planilha do Google Sheets
 → página de pagamento via Pix (com upload de comprovante) → página de
-obrigado → grupo do WhatsApp (com aprovação manual de admin).
+obrigado → grupo do WhatsApp (com aprovação manual de admin). Inclui também
+um dashboard (`dashboard.html`) pra acompanhar as inscrições em tempo real.
 
 ## Estrutura de pastas
 
@@ -11,17 +12,19 @@ obrigado → grupo do WhatsApp (com aprovação manual de admin).
 summit-horizon/
 │
 ├── index.html            → Página principal (landing page)
-├── pagamento.html          → Página de pagamento (QR Code Pix + upload de comprovante)
-├── obrigado.html            → Página de obrigado (pós-comprovante → WhatsApp)
-├── README.md                 → Este arquivo
+├── dashboard.html          → Dashboard de inscrições (protegido por senha)
+├── pagamento.html            → Página de pagamento (QR Code Pix + upload de comprovante)
+├── obrigado.html               → Página de obrigado (pós-comprovante → WhatsApp)
+├── README.md                     → Este arquivo
 │
 ├── css/
-│   └── style.css               → Todo o CSS customizado (cores, tipografia, seções, modal, obrigado)
+│   └── style.css               → Todo o CSS customizado (cores, tipografia, seções, modal, obrigado, dashboard)
 │
 ├── js/
-│   ├── config.js                → ⚙️ ÚNICO arquivo que você precisa editar (Sheets + Pix + WhatsApp)
+│   ├── config.js                → ÚNICO arquivo que precisa editar caso necessário (Sheets + Pix + WhatsApp)
 │   ├── script.js                 → Lógica do formulário de inscrição e redirecionamento
-│   └── pagamento.js               → Lógica da página de pagamento (Pix + envio do comprovante)
+│   ├── pagamento.js               → Lógica da página de pagamento (Pix + envio do comprovante)
+│   └── dashboard.js                → Lógica do dashboard (autenticação + busca de dados + gráficos)
 │
 ├── google-apps-script/
 │   ├── Code.gs                     → Código para colar no Apps Script (inscrições + comprovantes)
@@ -58,17 +61,8 @@ summit-horizon/
 
 O modal de inscrição (`#inscricaoModal` no `index.html`) envia os dados
 diretamente para uma planilha do Google Sheets, sem precisar de backend —
-usando um **Google Apps Script Web App** como ponte. Você só precisa criar
-a planilha, publicar o script (código já pronto em
-`google-apps-script/Code.gs`) e colar a URL gerada em **`js/config.js`**.
-
-### Por que assim, em vez de um Google Forms?
-
-O Google Forms funcionaria, mas ele geraria um formulário público que
-ninguém nunca vê (o site usa o modal próprio), e o envio é "às cegas" — sem
-confirmação de que deu certo. Indo direto para a planilha via Apps Script,
-você tem controle total do formato dos dados **e** confirmação real de
-sucesso no envio.
+usando um **Google Apps Script Web App** como ponte. Código está em (código já pronto em
+`google-apps-script/Code.gs`) colar a URL gerada em **`js/config.js`**.
 
 ### Passo a passo
 
@@ -82,7 +76,7 @@ sucesso no envio.
      copie todo o conteúdo e cole no editor
    - Clique no ícone de disquete (salvar) — pode dar qualquer nome ao projeto
 
-3. **Declare as permissões explicitamente no manifesto** (o Apps Script às
+3. **Necessário declarar as permissões explicitamente no manifesto** (o Apps Script às
    vezes não detecta sozinho que o Drive precisa de permissão de
    **escrita**, só de leitura, e trava com erro mesmo depois de autorizar):
    - Clique no ícone de engrenagem **(Configurações do projeto)** na barra
@@ -94,7 +88,7 @@ sucesso no envio.
      (está na pasta do projeto)
    - Salve
 
-4. **Autorize o acesso ao Google Drive (obrigatório, senão o upload de
+4. **Autorizar o acesso ao Google Drive (obrigatório, senão o upload de
    comprovante dá erro de permissão):**
    - Volte pro `Code.gs`. No menu suspenso ao lado do botão **Executar (▶)**,
      selecione a função **`autorizarPermissoes`**
@@ -153,9 +147,49 @@ sucesso no envio.
 
 ---
 
-## 2. Limite de vagas ("Inscrições encerradas!")
+## 2. Dashboard de inscrições (`dashboard.html`)
 
-O site consulta automaticamente quantas inscrições já existem na planilha.
+Uma página própria, no mesmo estilo visual do site, mostrando em tempo real:
+total de inscritos, vagas restantes (com barra de progresso), quantos já
+enviaram comprovante, quantos ainda estão aguardando pagamento, a
+distribuição por conexão e por nível de mapas/condicionamento físico, e uma
+tabela com as últimas inscrições. Atualiza sozinho a cada 30 segundos, e
+funciona bem tanto no computador quanto no celular.
+
+### Por que não um dashboard "dentro" do Google Sheets?
+
+Dá pra fazer gráficos nativos do Sheets, mas eles ficam bem limitados no
+app do celular (pouco espaço, sem controle de estilo). Esse `dashboard.html`
+lê os mesmos dados da sua planilha (através do mesmo Apps Script que já
+está no ar), só que renderizados como uma página normal — assim fica bonito
+nos dois tamanhos de tela.
+
+### Protegido por senha
+
+Como a planilha tem nome, e-mail e telefone das pessoas, o dashboard pede
+uma senha antes de mostrar qualquer dado (fica salva no navegador depois do
+primeiro acesso, não precisa digitar toda vez). Pra configurar a sua senha:
+
+1. Abra `google-apps-script/Code.gs` e troque:
+   ```js
+   var DASHBOARD_TOKEN = 'troque-esta-senha';
+   ```
+   por uma senha sua.
+2. Republique o Web App (Implantar → Gerenciar implantações → ✏️ → Nova
+   versão → Implantar).
+3. Acesse `https://seu-site.netlify.app/dashboard.html`, digite a senha.
+
+> Isso não é uma segurança "de banco" — é o suficiente pra impedir acesso
+> casual de quem não tem a senha, mas alguém com acesso técnico avançado
+> ainda poderia contornar. Pra esse tipo de evento, costuma ser suficiente;
+> se quiser algo mais robusto no futuro (ex: login com Google restrito a
+> uma lista de e-mails), dá pra evoluir depois.
+
+---
+
+## 3. Limite de vagas ("Inscrições encerradas!")
+
+Coloquei uma consulta automatica de quantas inscrições já existem na planilha.
 Quando esse número bate o limite configurado, **o formulário para de abrir**
 e aparece um aviso de **"Inscrições encerradas!"** no lugar — sem você
 precisar fazer nada manualmente.
@@ -189,7 +223,7 @@ carregamento), o formulário fica liberado normalmente — a segunda camada
 
 ---
 
-## 3. Pagamento via Pix (QR Code + comprovante)
+## 4. Pagamento via Pix (QR Code + comprovante)
 
 Depois que a pessoa se inscreve, ela é levada para `pagamento.html`, que
 mostra o **QR Code Pix**, a **chave Pix copiável** e um campo pra enviar o
@@ -241,7 +275,7 @@ mostra o **QR Code Pix**, a **chave Pix copiável** e um campo pra enviar o
 
 ---
 
-## 4. Página de obrigado + redirecionamento para o WhatsApp
+## 5. Página de obrigado + redirecionamento para o WhatsApp
 
 Depois que o comprovante é enviado com sucesso, a pessoa é levada
 automaticamente para `obrigado.html`, no mesmo estilo visual do site. Essa
@@ -279,7 +313,7 @@ se quiser mais ou menos tempo de espera.
 
 ---
 
-## 5. Vídeo do "Assistir Teaser"
+## 6. Vídeo do "Assistir Teaser"
 
 O botão **"Assistir Teaser"** do header abre um modal com um player de
 vídeo. Para funcionar, basta colocar o arquivo do vídeo em:
@@ -305,7 +339,7 @@ fechar (lógica já pronta em `js/script.js`).
 
 ---
 
-## 6. Colocar em um versionador (Git) e publicar com URL própria
+## 7. Colocar em um versionador (Git) e publicar com URL própria
 
 Como o site ainda vai sofrer atualizações, o ideal é usar **Git + GitHub**
 para versionar, conectado a um serviço de deploy automático — assim toda vez
@@ -389,3 +423,6 @@ detecta a mudança e republica o site automaticamente, com a mesma URL.
 | Lógica de envio e redirecionamento          | `js/script.js`                          |
 | Lógica da planilha e dos comprovantes         | `google-apps-script/Code.gs`            |
 | Limite de vagas / "Inscrições encerradas"       | `LIMITE_INSCRICOES` em `google-apps-script/Code.gs` |
+| Senha do dashboard                                | `DASHBOARD_TOKEN` em `google-apps-script/Code.gs` |
+| Texto/estilo do dashboard                           | `dashboard.html`                        |
+| Lógica do dashboard                                   | `js/dashboard.js`                       |
