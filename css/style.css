@@ -1,7 +1,7 @@
 :root{
     --forest:#132A20;
     --forest-2:#0E2119;
-    --blue-forrest: #142841;
+    --blue-forest: #142841;
     --cream:#F5F1E6;
     --orange:#F2621A;
     --orange-dark:#D9520F;
@@ -73,8 +73,7 @@
   .btn-orange:hover{ background:var(--orange-dark); color:#fff; transform:translateY(-1px); }
 
   .btn-outline-cream{
-    border:1.5px solid rgba(255,255,255,.55);
-    color:#fff;
+    border:1.5px solid rgba(255,255,255,.55);    
     border-radius:50px;
     padding:9px 20px 9px 12px;
     font-weight:500;
@@ -283,14 +282,14 @@
 
   /* ===== TRUST / TESTIMONIALS ===== */
   .trust-section{
-    background:var(--forest);
+    background:var(--blue-forest);
     color:#fff;
     position:relative;
   }
   .trust-section::before{
     content:'';
     position:absolute; inset:0;
-    background:url('https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?q=80&w=1974&auto=format&fit=crop') center/cover;
+    background:url('../assets/images/bg_trust_people.png') center/cover;
     opacity:.10;
   }
   .trust-section .inner{ position:relative; z-index:1; }
@@ -360,7 +359,7 @@
     position:relative;
     background:
       linear-gradient(100deg, rgba(9,18,14,.94) 0%, rgba(9,18,14,.75) 45%, rgba(9,18,14,.25) 100%),
-      url('https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=2070&auto=format&fit=crop') center/cover;
+      url('../assets/images/bg_final-cta.png') center/cover;
     padding:90px 0;
     color:#fff;
   }
@@ -428,7 +427,7 @@
     overflow:hidden;
   }
   .modal-header-custom{
-    background:var(--forest);
+    background:var(--blue-forest);
     color:#fff;
     padding:26px 30px;
     position:relative;
